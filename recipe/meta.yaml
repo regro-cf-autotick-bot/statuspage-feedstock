@@ -6,15 +6,13 @@ package:
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 4eb5f3bc2ea33f59f0b42c9cd2ef6c909e09069b7c96a71dae32f72dab068b02
 
 build:
   number: 2
   noarch: python
-  script: python setup.py install --single-version-externally-managed --record=record.txt
-  preserve_egg_dir: True
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - statuspage = statuspage.statuspage:cli
 
@@ -22,7 +20,7 @@ requirements:
   host:
     - python {{ python_min }}
     - setuptools
-
+    - pip
   run:
     - python >={{ python_min }}
     - pygithub
